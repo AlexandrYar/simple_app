@@ -18,10 +18,9 @@ func Connection() *sql.DB {
 	return conn
 }
 
-func FindLogin(conn *sql.DB, loginUser, passwordUser string) (string, bool) {
+func Login(conn *sql.DB, loginUser, passwordUser string) (string, bool) {
 	rows, err := conn.Query(`select "login" from user_info where login =$1`, loginUser)
 	var message string = " "
-	log.Print(">" + loginUser + "<>" + passwordUser + "<")
 	if loginUser == "" && passwordUser == "" {
 		return message, false
 	}
@@ -69,4 +68,33 @@ func Register(conn *sql.DB, login, password, first_name, second_name, email, dat
 	}
 	_, e := conn.Exec(sqlStatement, id+1, login, password, first_name, second_name, email, date_of_birth)
 	fmt.Println(e, "\nNew user!!")
+}
+
+type user_info struct {
+	login, first_name, last_name, email, date_of_birth string
+}
+
+func Find_info(conn *sql.DB, fing_login string) (login, first_name, last_name, email, date_of_birth string) {
+	log.Println(fing_login)
+	rows, err := conn.Query(`select "login", "first_name", "last_name", "email", "date_of_birth" from user_info where login = $1`, fing_login)
+	if err != nil {
+		log.Println(err, "err 1")
+	}
+	log.Println(rows)
+	for rows.Next() {
+		var some_info user_info
+		err = rows.Scan(&some_info.login, &some_info.first_name, &some_info.last_name, &some_info.email, &some_info.date_of_birth)
+		if err != nil {
+			log.Println(err, "err 2")
+		}
+		login = some_info.login
+		first_name = some_info.first_name
+		last_name = some_info.last_name
+		email = some_info.email
+		date_of_birth = some_info.date_of_birth
+		log.Println(login, first_name, last_name, email, date_of_birth+"HIHIHIHIHI")
+
+	}
+	log.Println(login, first_name, last_name, email, date_of_birth+"HIHI")
+	return login, first_name, last_name, email, date_of_birth
 }

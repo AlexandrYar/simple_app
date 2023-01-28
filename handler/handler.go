@@ -24,12 +24,24 @@ func Register(c *gin.Context) {
 func Login(c *gin.Context) {
 	login := c.PostForm("login")
 	password := c.PostForm("password")
-	message, isRedirect := db.FindLogin(db.Connection(), login, password)
+	message, isRedirect := db.Login(db.Connection(), login, password)
 	if isRedirect {
-		log.Print("AAAAAAAAAAAAAAAAAAAAAAAAAA")
-		c.Redirect(http.StatusTemporaryRedirect, "/userpage")
+		c.Redirect(http.StatusTemporaryRedirect, "/userpage/"+login)
 	}
 	c.HTML(http.StatusTemporaryRedirect, "login.html", gin.H{
 		"Message": message,
+	})
+}
+
+func UserPage(c *gin.Context) {
+	login_given := c.Params.ByName("login")
+	login, first_name, last_name, email, date_of_birth := db.Find_info(db.Connection(), login_given)
+	log.Println(login, first_name, last_name, email, date_of_birth)
+	c.HTML(http.StatusOK, "userPage.html", gin.H{
+		"Login":         login,
+		"First_name":    first_name,
+		"Last_name":     last_name,
+		"Email":         email,
+		"Date_of_birth": date_of_birth,
 	})
 }
