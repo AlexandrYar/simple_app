@@ -92,7 +92,7 @@ func (user User) Register(conn *sql.DB, login, password, first_name, second_name
 		rows.Scan(&id)
 	}
 	_, e := conn.Exec(sqlStatement, id+1, user.Login, user.Password, user.First_name, user.Last_name, user.Email, user.Date_of_birth)
-	fmt.Println(e, "\nNew user!!")
+	fmt.Println(e, "New user!!", user.Login)
 }
 
 func (user *User) Find_info(conn *sql.DB, fing_login string) {

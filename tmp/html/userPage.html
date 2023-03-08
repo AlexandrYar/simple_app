@@ -1,8 +1,32 @@
-<div>
-    User page
-    {{ .Login }}
-    {{ .First_name }}
-    {{ .Last_name }}
-    {{ .Email }}
-    {{ .Date_of_birth }}
-</div>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <p>
+            User`s page     
+        </p>
+        <div>
+            Login : {{ .Login }}   
+        </div>
+        <div>
+            Name : {{ .First_name }}    
+        </div>
+        <div>
+            Last name : {{ .Last_name }}    
+        </div>
+        <div>
+            Email : {{ .Email }}    
+        </div>
+        <div>
+            Date of birth : {{ .Date_of_birth }}  
+        </div>
+    </div>
+</body>
+</html>

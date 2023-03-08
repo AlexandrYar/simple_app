@@ -17,17 +17,17 @@ func Register(c *gin.Context) {
 	date_of_birth := c.PostForm("date_of_birth")
 	var user db.User
 	user.Register(db.ConnDb.Connection(db.NewDb), login, password, first_name, last_name, email, date_of_birth)
-	c.HTML(200, "register.html", gin.H{
-		"Login": login,
-	})
+
+	c.HTML(http.StatusTemporaryRedirect, "register.html", gin.H{})
+
 }
 
 func Login(c *gin.Context) {
 	login := c.PostForm("login")
 	password := c.PostForm("password")
 	var user db.User
-	message, isRedirect := user.LoginUser(db.ConnDb.Connection(db.NewDb), login, password)
-	if isRedirect {
+	message, isRedirectUserPage := user.LoginUser(db.ConnDb.Connection(db.NewDb), login, password)
+	if isRedirectUserPage {
 		c.Redirect(http.StatusTemporaryRedirect, "/userpage/"+login)
 	}
 	c.HTML(http.StatusTemporaryRedirect, "login.html", gin.H{
@@ -46,4 +46,8 @@ func UserPage(c *gin.Context) {
 		"Email":         user.Email,
 		"Date_of_birth": user.Date_of_birth,
 	})
+}
+
+func MainPage(c *gin.Context) {
+	c.HTML(200, "main_page.html", nil)
 }
