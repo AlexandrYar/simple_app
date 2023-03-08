@@ -1,7 +1,7 @@
 package main
 
 import (
-	"example/mymodule/handler"
+	"github.com/AlexandrYar/simple_app/internal/handler"
 
 	"github.com/gin-gonic/gin"
 )
