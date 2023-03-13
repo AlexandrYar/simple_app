@@ -18,6 +18,8 @@ func main() {
 	router.GET("/userpage/:login", handler.UserPage)
 	router.POST("/userpage/:login", handler.UserPage)
 	router.GET("/main_page", handler.MainPage)
+	router.POST("/userpage/:login/addItem", handler.AddItem)
+	router.GET("/userpage/:login/addItem", handler.AddItem)
 
 	router.Run("localhost:8080") // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }

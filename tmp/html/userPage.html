@@ -28,5 +28,21 @@
             Date of birth : {{ .Date_of_birth }}  
         </div>
     </div>
+    <div>
+        <a href= "{{ .Login }}/addItem">Add new item</a>
+    </div>
+   <div>
+    <p>
+        Your items:
+    </p>
+    <ul>
+        {{ range .Items }}
+        <li>
+            {{ .Id }} {{ .Title }} {{ .Price }} {{ .Amount }} {{ .SellerName }}
+            <img src = "../../{{ .PhotoUrl }}" alt="Photo doesn't exist">
+        </li>  
+        {{ end }}
+    </ul>
+   </div>
 </body>
 </html>

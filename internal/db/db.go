@@ -26,6 +26,15 @@ type User struct {
 	Date_of_birth string
 }
 
+type Item struct {
+	Id         string
+	Title      string
+	Price      string
+	Amount     string
+	PhotoUrl   string
+	SellerName string
+}
+
 var NewDb = ConnDb{
 	host:     "localhost",
 	port:     "5432",
@@ -80,7 +89,7 @@ func (user User) LoginUser(conn *sql.DB, loginUser, passwordUser string) (string
 	}
 }
 
-func (user User) Register(conn *sql.DB, login, password, first_name, second_name, email, date_of_birth string) {
+func (user *User) Register(conn *sql.DB) {
 	sqlStatement := `insert into user_info ( id, login, password, first_name, last_name, email, date_of_birth) values ($1, $2, $3, $4, $5, $6, $7)`
 	rows, err := conn.Query(`SELECT COUNT(*) FROM user_info`)
 	if err != nil {
@@ -100,14 +109,45 @@ func (user *User) Find_info(conn *sql.DB, fing_login string) {
 	if err != nil {
 		log.Println(err, "err 1")
 	}
-	log.Println(rows)
 	for rows.Next() {
 		err = rows.Scan(&user.Login, &user.First_name, &user.Last_name, &user.Email, &user.Date_of_birth)
 		if err != nil {
 			log.Println(err, "err 2")
 		}
-
-		log.Println(user)
-
 	}
+}
+
+func (user *User) AddNewItem(conn *sql.DB, item Item) {
+	sqlStatement := `insert into items ( id, title, price, amount, photoUrl, sellerName) values ($1, $2, $3, $4, $5, $6)`
+	_, e := conn.Exec(sqlStatement, item.Id, item.Title, item.Price, item.Amount, item.PhotoUrl, item.SellerName)
+	fmt.Println(e, "New item!!", item.Title)
+}
+
+func (user *User) GetItems(conn *sql.DB) []Item {
+	rows, err := conn.Query(`SELECT COUNT(*) FROM items where sellername = $1`, user.Login)
+	if err != nil {
+		log.Fatal(err)
+	}
+	var count int
+
+	for rows.Next() {
+		rows.Scan(&count)
+	}
+
+	rows, err = conn.Query(`select * from items where sellerName = $1`, user.Login)
+	if err != nil {
+		log.Println(err, "err 1")
+	}
+	var item Item
+	var items []Item
+	for i := 0; i < count; i++ {
+		for rows.Next() {
+			err = rows.Scan(&item.Id, &item.Title, &item.Price, &item.Amount, &item.PhotoUrl, &item.SellerName)
+			if err != nil {
+				log.Println(err, "err 2")
+			}
+			items = append(items, item)
+		}
+	}
+	return items
 }

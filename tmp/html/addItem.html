@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <form method="post" accept="http://localhost:8080/userpage/{{ .Login }}/addItem" enctype="multipart/form-data">
+        <div>
+            <div>
+                <input type="text" placeholder="id" name="id" >
+            </div>
+            <div>
+                <input type="text" placeholder="title" name="title">
+            </div>
+            <div>
+                <input type="text" placeholder="price" name="price">
+            </div>
+            <div>
+                <input type="text" placeholder="amount" name="amount">
+            </div>
+            <div>
+                <input type="file" placeholder="photo" name="photo">
+            </div>
+            <div>
+                <button >Add new item</button>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
